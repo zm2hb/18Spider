@@ -75,7 +75,7 @@ class QiubaiSpider:
                 writer.writerow(content.values())
 #                f.write(json.dumps(content,ensure_ascii=False)) #保存txt文件
 #                f.write('\n')
- 00                print('保存成功')
+                print('保存成功')
     
     #主要运行逻辑
     def run(self):
