@@ -16,4 +16,5 @@ spider.py
 
 lianjia.py
 链家二手房
-爬虫综合联系（正则/保存mysql&mongoDB/私密代理）
+爬虫综合练习（正则/保存mysql&mongoDB/私密代理）
+

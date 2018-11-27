@@ -41,7 +41,7 @@ class LianjiaSpider:
 
     def workOn(self):
         while True:
-            c = input("çˆ¬æŒ‰y,é€€å‡ºq:")
+            c = input("y爬取/任意键结束:")
             if c == "y":
                 url = self.baseurl + \
                       str(self.page) + "/"
