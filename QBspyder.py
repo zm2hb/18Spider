@@ -3,7 +3,7 @@
 import requests
 from lxml import etree
 import csv
-
+import pymongo
 '''
 
 Created on Tue Nov 20 2018
@@ -17,8 +17,14 @@ class QiubaiSpider:
     def __init__(self):
         self.url_temp='https://www.qiushibaike.com/8hr/page/{}/'
         self.headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36'}
+        #链接数据库对象
+        self.conn = pymongo.MongoClient('localhost',27017)
+        #库对象
+        self.db = self.conn['Qiushi']
+        #集合对象
+        self.myset = self.db['qiushiinfo']
        #csv文件表头
-        with open('qb.csv','r+',newline='') as f:
+        with open('qb.csv','w',newline='') as f:
             headers = ['author_name','content','stats_vote','stats_comments','img']
             self.writer = csv.DictWriter(f,headers)
             self.writer.writeheader()
@@ -64,8 +70,8 @@ class QiubaiSpider:
     #保存数据
     def save_content_list(self,content_list):
        
-#        print(content_list)
-        with open('qb.csv','a',newline='',encoding='gb18030') as f:
+#        print(content_list)        print(img_list)
+        with open('qb.csv','a',newline='',encoding='utf-8') as f:
             writer = csv.writer(f)
             print(content_list)
             cl = content_list
@@ -76,6 +82,11 @@ class QiubaiSpider:
 #                f.write(json.dumps(content,ensure_ascii=False)) #保存txt文件
 #                f.write('\n')
                 print('保存成功')
+
+    #保存进mongodb数据库
+    def save_parse_Page(self,content_list):
+        self.myset.insert(content_list)
+
     
     #主要运行逻辑
     def run(self):
@@ -88,6 +99,7 @@ class QiubaiSpider:
             content_list = self.get_content_list(html_str)
             #保存文件
             self.save_content_list(content_list)
+            self.myset.insert(content_list)
         
 if __name__ == '__main__':
     qb = QiubaiSpider()
